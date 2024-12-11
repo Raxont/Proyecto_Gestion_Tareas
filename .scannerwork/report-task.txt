@@ -1,6 +1,6 @@
-projectKey=Prueba_Gestion_Tareas
+projectKey=Prueba_Gestion_Tareas2
 serverUrl=http://localhost:9002
 serverVersion=24.12.0.100206
-dashboardUrl=http://localhost:9002/dashboard?id=Prueba_Gestion_Tareas
-ceTaskId=cc17d522-a798-4017-9149-8d6cbb9ac2b6
-ceTaskUrl=http://localhost:9002/api/ce/task?id=cc17d522-a798-4017-9149-8d6cbb9ac2b6
+dashboardUrl=http://localhost:9002/dashboard?id=Prueba_Gestion_Tareas2
+ceTaskId=8adf6608-927a-44af-b6bf-c45fec0c729d
+ceTaskUrl=http://localhost:9002/api/ce/task?id=8adf6608-927a-44af-b6bf-c45fec0c729d
