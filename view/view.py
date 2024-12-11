@@ -4,20 +4,28 @@ import tkinter as tk
 from tkinter import messagebox, simpledialog
 from tkinter import ttk
 
-# Añadir el directorio base al sys.path
+# Configuración del sistema para añadir el directorio base al sys.path
+# Esto permite importar módulos desde un directorio padre.
 base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(base_path)
 
+# Importación de módulos personalizados para el controlador y manejo de datos
 from controller.controller import Controller
 from model.model import guardar_tareas_en_archivo, cargar_tareas_desde_archivo
+
+# Textos para reutilización
 text1= "Descripción"
 text2= "Título"
 text3= "Éxito"
 
 class GestionTareasApp:
+    """Clase que representa la aplicación de gestión de tareas con una interfaz gráfica."""
     def __init__(self, root):
+        # Inicialización del controlador para gestionar la lógica del negocio
         self.controller = Controller()
         self.root = root
+        
+        # Configuración de la ventana principal
         self.root.title("Gestión de Tareas")
         self.root.geometry("800x400")
         self.root.config(bg="#f5f5f5")
@@ -25,17 +33,17 @@ class GestionTareasApp:
         # Cargar tareas desde el archivo
         cargar_tareas_desde_archivo()
 
-        # Marco para los formularios de entrada
+        # Creación de la interfaz para añadir nuevas tareas
         self.form_frame = tk.Frame(self.root, bg="#f5f5f5")
         self.form_frame.pack(pady=10)
 
-        # Título
+        # Campo de entrada para el título de la tarea
         self.titulo_label = tk.Label(self.form_frame, text="Título:", bg="#f5f5f5", font=("Helvetica", 12))
         self.titulo_label.grid(row=0, column=0, padx=10, pady=5, sticky="w")
         self.titulo_entry = tk.Entry(self.form_frame, font=("Helvetica", 12))
         self.titulo_entry.grid(row=0, column=1, padx=10, pady=5, sticky="w")
 
-        # Descripción
+        # Campo de entrada para la descripción de la tarea
         self.descripcion_label = tk.Label(self.form_frame, text="Descripción", bg="#f5f5f5", font=("Helvetica", 12))
         self.descripcion_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
         self.descripcion_entry = tk.Entry(self.form_frame, font=("Helvetica", 12))
@@ -55,7 +63,7 @@ class GestionTareasApp:
         self.tree = ttk.Treeview(self.tareas_frame, columns=("ID", text2, text1, "Estado"), show="headings", selectmode="browse")
         self.tree.pack(fill="both", expand=True)
 
-        # Definir columnas
+        # Definición de encabezados y columnas en la tabla de tareas
         self.tree.heading("ID", text="ID")
         self.tree.heading(text2, text=text2)
         self.tree.heading(text1, text=text1)
@@ -68,10 +76,11 @@ class GestionTareasApp:
         # Cargar las tareas al iniciar la app
         self.actualizar_tareas()
 
-        # Bind para manejar clic en una tarea de la lista
+        # Enlace para manejar el clic en una tarea de la lista
         self.tree.bind("<ButtonRelease-1>", self.on_tarea_click)
 
     def agregar_tarea(self):
+        """Agrega una nueva tarea utilizando los datos del formulario."""
         titulo = self.titulo_entry.get().strip()
         descripcion = self.descripcion_entry.get().strip()
 
@@ -96,6 +105,7 @@ class GestionTareasApp:
             messagebox.showerror("Error", "Ya existe una tarea con ese título.")
 
     def actualizar_tareas(self):
+        """Actualiza la lista de tareas mostradas en el Treeview."""
         for item in self.tree.get_children():
             self.tree.delete(item)
 
@@ -113,6 +123,7 @@ class GestionTareasApp:
             self.tree.insert("", "end", values=(tarea_id, titulo, descripcion, estado))
 
     def on_tarea_click(self, event):
+        """Muestra opciones al hacer clic en una tarea."""
         item = self.tree.selection()
         if not item:
             return
@@ -134,6 +145,7 @@ class GestionTareasApp:
             self.mostrar_botones_editar_completar(tarea_id)
 
     def mostrar_botones_editar_completar(self, tarea_id):
+        """Muestra campos para editar una tarea."""
         top = tk.Toplevel(self.root)
         top.title("Acciones de Tarea")
         top.geometry("300x150")
@@ -142,6 +154,7 @@ class GestionTareasApp:
         tk.Button(top, text="Completar Tarea", command=lambda: self.completar_tarea(tarea_id, top)).pack(pady=10)
 
     def modificar_tarea(self, tarea_id, top):
+        """Modifica la tarea con los datos deseados."""
         tarea = self.controller.obtener_tarea_por_id(tarea_id)
 
         nuevo_titulo = simpledialog.askstring("Modificar Título", "Nuevo Título:", initialvalue=tarea["titulo"])
@@ -160,6 +173,7 @@ class GestionTareasApp:
         messagebox.showinfo(text3, "Tarea modificada correctamente.")
 
     def completar_tarea(self, tarea_id, top):
+        """Marca la tarea como completada."""
         self.controller.marcar_completada(tarea_id)
         guardar_tareas_en_archivo()
         self.actualizar_tareas()
@@ -167,6 +181,7 @@ class GestionTareasApp:
         messagebox.showinfo(text3, "Tarea completada.")
 
     def mostrar_boton_eliminar(self, tarea_id):
+        """Muestra el boton para eliminar una tarea completada"""
         top = tk.Toplevel(self.root)
         top.title("Eliminar Tarea Completada")
         top.geometry("300x150")
@@ -174,6 +189,7 @@ class GestionTareasApp:
         tk.Button(top, text="Eliminar Tarea Completada", command=lambda: self.eliminar_tarea_completada(tarea_id, top)).pack(pady=10)
 
     def eliminar_tarea_completada(self, tarea_id, top):
+        """Realiza la eliminacion de la tarea completada"""
         self.controller.eliminar_tareas_completadas(tarea_id)
         guardar_tareas_en_archivo()
         self.actualizar_tareas()
