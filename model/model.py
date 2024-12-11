@@ -1,22 +1,8 @@
 import json
 from sqlalchemy import Column, Integer, String, Boolean
-from database.database import Base, session, engine
+from database.database import session, Tarea
 
 TAREAS_JSON_PATH = "tareas.json"
-
-class Tarea(Base):
-    __tablename__ = 'tareas'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    titulo = Column(String, nullable=False, unique=True)
-    descripcion = Column(String, nullable=True)
-    completada = Column(Boolean, default=False)
-
-    # Permite extender la tabla si ya existe
-    __table_args__ = {'extend_existing': True}
-
-# Crear las tablas usando el engine
-Base.metadata.create_all(engine)
 
 def guardar_tareas_en_archivo(archivo=TAREAS_JSON_PATH):
     """Guarda las tareas actuales en un archivo JSON."""

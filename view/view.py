@@ -10,7 +10,9 @@ sys.path.append(base_path)
 
 from controller.controller import Controller
 from model.model import guardar_tareas_en_archivo, cargar_tareas_desde_archivo
-
+text1= "Descripción"
+text2= "Título"
+text3= "Éxito"
 
 class GestionTareasApp:
     def __init__(self, root):
@@ -34,7 +36,7 @@ class GestionTareasApp:
         self.titulo_entry.grid(row=0, column=1, padx=10, pady=5, sticky="w")
 
         # Descripción
-        self.descripcion_label = tk.Label(self.form_frame, text="Descripción:", bg="#f5f5f5", font=("Helvetica", 12))
+        self.descripcion_label = tk.Label(self.form_frame, text="Descripción", bg="#f5f5f5", font=("Helvetica", 12))
         self.descripcion_label.grid(row=1, column=0, padx=10, pady=5, sticky="w")
         self.descripcion_entry = tk.Entry(self.form_frame, font=("Helvetica", 12))
         self.descripcion_entry.grid(row=1, column=1, padx=10, pady=5, sticky="w")
@@ -50,17 +52,17 @@ class GestionTareasApp:
         self.tareas_frame.pack(fill="both", padx=10, pady=10)
 
         # Lista de tareas con Treeview
-        self.tree = ttk.Treeview(self.tareas_frame, columns=("ID", "Título", "Descripción", "Estado"), show="headings", selectmode="browse")
+        self.tree = ttk.Treeview(self.tareas_frame, columns=("ID", text2, text1, "Estado"), show="headings", selectmode="browse")
         self.tree.pack(fill="both", expand=True)
 
         # Definir columnas
         self.tree.heading("ID", text="ID")
-        self.tree.heading("Título", text="Título")
-        self.tree.heading("Descripción", text="Descripción")
+        self.tree.heading(text2, text=text2)
+        self.tree.heading(text1, text=text1)
         self.tree.heading("Estado", text="Estado")
         self.tree.column("ID", width=30, anchor="center")
-        self.tree.column("Título", width=150, anchor="w")
-        self.tree.column("Descripción", width=200, anchor="w")
+        self.tree.column(text2, width=150, anchor="w")
+        self.tree.column(text1, width=200, anchor="w")
         self.tree.column("Estado", width=100, anchor="center")
 
         # Cargar las tareas al iniciar la app
@@ -86,7 +88,7 @@ class GestionTareasApp:
 
             self.titulo_entry.delete(0, tk.END)
             self.descripcion_entry.delete(0, tk.END)
-            messagebox.showinfo("Éxito", "Tarea agregada correctamente.")
+            messagebox.showinfo(text3, "Tarea agregada correctamente.")
         else:
             self.titulo_entry.delete(0, tk.END)
             self.descripcion_entry.delete(0, tk.END)
@@ -155,14 +157,14 @@ class GestionTareasApp:
         guardar_tareas_en_archivo()
         self.actualizar_tareas()
         top.destroy()
-        messagebox.showinfo("Éxito", "Tarea modificada correctamente.")
+        messagebox.showinfo(text3, "Tarea modificada correctamente.")
 
     def completar_tarea(self, tarea_id, top):
         self.controller.marcar_completada(tarea_id)
         guardar_tareas_en_archivo()
         self.actualizar_tareas()
         top.destroy()
-        messagebox.showinfo("Éxito", "Tarea completada.")
+        messagebox.showinfo(text3, "Tarea completada.")
 
     def mostrar_boton_eliminar(self, tarea_id):
         top = tk.Toplevel(self.root)
@@ -176,7 +178,7 @@ class GestionTareasApp:
         guardar_tareas_en_archivo()
         self.actualizar_tareas()
         top.destroy()
-        messagebox.showinfo("Éxito", "Tarea eliminada.")
+        messagebox.showinfo(text3, "Tarea eliminada.")
 
 
 if __name__ == "__main__":
