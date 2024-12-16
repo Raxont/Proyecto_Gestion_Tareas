@@ -74,3 +74,26 @@ Cambia el estado de una tarea a "Completada".
 
 ### Eliminar Tarea
 Elimina tareas que ya estén completadas.
+
+# Fotos del aplicativo
+
+## Inicio
+![Imagen 1](./img/1.PNG)
+
+## Agregar tarea
+![Imagen 1](./img/2.PNG)
+
+## Modificar tarea
+![Imagen 1](./img/3.PNG)
+
+## Tarea modificada
+![Imagen 1](./img/4.PNG)
+
+## Completar tarea
+![Imagen 1](./img/5.PNG)
+
+## Eliminar tarea confirmada
+![Imagen 1](./img/6.PNG)
+
+## Eliminacion confirmada
+![Imagen 1](./img/7.PNG)
